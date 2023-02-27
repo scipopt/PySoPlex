@@ -35,7 +35,7 @@
 #        PRINTBASISMETRIC      =  28
 #        STATTIMER             =  29
 #        INTPARAM_COUNT        =  30
-
+#
 #    ctypedef enum Status:
 #        ERROR          = -15, # an error occured.
 #        NO_RATIOTESTER = -14, # No ratiotester loaded
@@ -58,100 +58,100 @@
 #        INFEASIBLE     =  3,  # LP has been proven to be primal infeasible.
 #        INForUNBD      =  4,   # LP is primal infeasible or unbounded.
 #        OPTIMAL_UNSCALED_VIOLATIONS =  5   # LP has beed solved to optimality but unscaled solution contains violations.
-
-ctypedef enum OBJSENSE:
-    OBJSENSE_MAXIMIZE  =  1
-    OBJSENSE_MINIMIZE  =  -1
-
-ctypedef enum REPRESENTATION:
-    REPRESENTATION_AUTO   =  0
-    REPRESENTATION_COLUMN =  1
-    REPRESENTATION_ROW    =  2
-
-ctypedef enum ALGORITHM:
-    ALGORITHM_PRIMAL   =  0
-    ALGORITHM_DUAL     =  1
-
-ctypedef enum FACTOR_UPDATE_TYPE:
-    FACTOR_UPDATE_TYPE_ETA   =  0
-    FACTOR_UPDATE_TYPE_FT    =  1
-
-ctypedef enum VERBOSITY:
-    VERBOSITY_ERROR    =  0
-    VERBOSITY_WARNING  =  1
-    VERBOSITY_DEBUG    =  2
-    VERBOSITY_NORMAL   =  3
-    VERBOSITY_HIGH     =  4
-    VERBOSITY_FULL     =  5
-
-ctypedef enum SIMPLIFIER:
-    SIMPLIFIER_OFF        =  0
-    SIMPLIFIER_INTERNAL   =  3
-    SIMPLIFIER_PAPILO     =  2
-    SIMPLIFIER_AUTO       =  1
-
-ctypedef enum SCALAR:
-    SCALER_OFF         =  0
-    SCALER_UNIEQUI     =  1
-    SCALER_BIEQUI      =  2
-    SCALER_GEO1        =  3
-    SCALER_GEO8        =  4
-    SCALER_LEASTSQ     =  5
-    SCALER_GEOEQUI     =  6
-
-ctypedef enum STARTER:
-    STARTER_OFF     =  0
-    STARTER_WEIGHT  =  1
-    STARTER_SUM     =  2
-    STARTER_VECTOR  =  3
-
-ctypedef enum PRICER:
-    PRICER_AUTO        =  0
-    PRICER_DANTZIG     =  1
-    PRICER_PARMULT     =  2
-    PRICER_DEVEX       =  3
-    PRICER_QUICKSTEEP  =  4
-    PRICER_STEEP       =  5
-
-ctypedef enum RATIOTESTER:
-    RATIOTESTER_TEXTBOOK        =  0
-    RATIOTESTER_HARRIS          =  1
-    RATIOTESTER_FAST            =  2
-    RATIOTESTER_BOUNDFLIPPING   =  3
-
-ctypedef enum SYNCMODE:
-    SYNCMODE_ONLYREAL  =  0
-    SYNCMODE_AUTO      =  1
-    SYNCMODE_MANUAL    =  2
-
-ctypedef enum READMODE:
-    READMODE_REAL      =  0
-    READMODE_RATIONAL  =  1
-
-ctypedef enum SOLVEMODE:
-    SOLVEMODE_REAL     =  0
-    SOLVEMODE_AUTO     =  1
-    SOLVEMODE_RATIONAL =  2
-
-ctypedef enum CHECKMODE:
-    CHECKMODE_REAL     =  0
-    CHECKMODE_AUTO     =  1
-    CHECKMODE_RATIONAL =  2
-
-ctypedef enum TIMER:
-    TIMER_OFF       =  0
-    TIMER_CPU       =  1
-    TIMER_WALLCLOCK =  2
-
-ctypedef enum HYPER_PRICING:
-    HYPER_PRICING_OFF  =  0
-    HYPER_PRICING_AUTO =  1
-    HYPER_PRICING_ON   =  2
-
-ctypedef enum SOLUTION_POLISHING:
-    POLISHING_OFF            =  0
-    POLISHING_INTEGRALITY    =  1
-    POLISHING_FRACTIONALITY  =  2
+#
+#ctypedef enum OBJSENSE:
+#    OBJSENSE_MAXIMIZE  =  1
+#    OBJSENSE_MINIMIZE  =  -1
+#
+#ctypedef enum REPRESENTATION:
+#    REPRESENTATION_AUTO   =  0
+#    REPRESENTATION_COLUMN =  1
+#    REPRESENTATION_ROW    =  2
+#
+#ctypedef enum ALGORITHM:
+#    ALGORITHM_PRIMAL   =  0
+#    ALGORITHM_DUAL     =  1
+#
+#ctypedef enum FACTOR_UPDATE_TYPE:
+#    FACTOR_UPDATE_TYPE_ETA   =  0
+#    FACTOR_UPDATE_TYPE_FT    =  1
+#
+#ctypedef enum VERBOSITY:
+#    VERBOSITY_ERROR    =  0
+#    VERBOSITY_WARNING  =  1
+#    VERBOSITY_DEBUG    =  2
+#    VERBOSITY_NORMAL   =  3
+#    VERBOSITY_HIGH     =  4
+#    VERBOSITY_FULL     =  5
+#
+#ctypedef enum SIMPLIFIER:
+#    SIMPLIFIER_OFF        =  0
+#    SIMPLIFIER_INTERNAL   =  3
+#    SIMPLIFIER_PAPILO     =  2
+#    SIMPLIFIER_AUTO       =  1
+#
+#ctypedef enum SCALAR:
+#    SCALER_OFF         =  0
+#    SCALER_UNIEQUI     =  1
+#    SCALER_BIEQUI      =  2
+#    SCALER_GEO1        =  3
+#    SCALER_GEO8        =  4
+#    SCALER_LEASTSQ     =  5
+#    SCALER_GEOEQUI     =  6
+#
+#ctypedef enum STARTER:
+#    STARTER_OFF     =  0
+#    STARTER_WEIGHT  =  1
+#    STARTER_SUM     =  2
+#    STARTER_VECTOR  =  3
+#
+#ctypedef enum PRICER:
+#    PRICER_AUTO        =  0
+#    PRICER_DANTZIG     =  1
+#    PRICER_PARMULT     =  2
+#    PRICER_DEVEX       =  3
+#    PRICER_QUICKSTEEP  =  4
+#    PRICER_STEEP       =  5
+#
+#ctypedef enum RATIOTESTER:
+#    RATIOTESTER_TEXTBOOK        =  0
+#    RATIOTESTER_HARRIS          =  1
+#    RATIOTESTER_FAST            =  2
+#    RATIOTESTER_BOUNDFLIPPING   =  3
+#
+#ctypedef enum SYNCMODE:
+#    SYNCMODE_ONLYREAL  =  0
+#    SYNCMODE_AUTO      =  1
+#    SYNCMODE_MANUAL    =  2
+#
+#ctypedef enum READMODE:
+#    READMODE_REAL      =  0
+#    READMODE_RATIONAL  =  1
+#
+#ctypedef enum SOLVEMODE:
+#    SOLVEMODE_REAL     =  0
+#    SOLVEMODE_AUTO     =  1
+#    SOLVEMODE_RATIONAL =  2
+#
+#ctypedef enum CHECKMODE:
+#    CHECKMODE_REAL     =  0
+#    CHECKMODE_AUTO     =  1
+#    CHECKMODE_RATIONAL =  2
+#
+#ctypedef enum TIMER:
+#    TIMER_OFF       =  0
+#    TIMER_CPU       =  1
+#    TIMER_WALLCLOCK =  2
+#
+#ctypedef enum HYPER_PRICING:
+#    HYPER_PRICING_OFF  =  0
+#    HYPER_PRICING_AUTO =  1
+#    HYPER_PRICING_ON   =  2
+#
+#ctypedef enum SOLUTION_POLISHING:
+#    POLISHING_OFF            =  0
+#    POLISHING_INTEGRALITY    =  1
+#    POLISHING_FRACTIONALITY  =  2
 
 
 cdef extern from "soplex_interface.h":
@@ -181,8 +181,14 @@ cdef extern from "soplex_interface.h":
     # returns number of columns
     int SoPlex_numCols(void* soplex)
 
+    # sets boolean parameter value
+    void SoPlex_setBoolParam(void* soplex, int paramcode, int paramvalue)
+
     # sets integer parameter value
     void SoPlex_setIntParam(void* soplex, int paramcode, int paramvalue)
+
+    # sets real parameter value
+    void SoPlex_setRealParam(void* soplex, int paramcode, double paramvalue)
 
     # returns value of integer parameter
     int SoPlex_getIntParam(void* soplex, int paramcode)

@@ -20,37 +20,255 @@ if sys.version_info >= (3, 0):
 else:
     str_conversion = lambda x:x
 
+"""
 PY_INTPARAM = {
-    "OBJSENSE"              :  0,
-    "REPRESENTATION"        :  1,
-    "ALGORITHM"             :  2,
-    "FACTOR_UPDATE_TYPE"    :  3,
-    "FACTOR_UPDATE_MAX"     :  4,
-    "ITERLIMIT"             :  5,
-    "REFLIMIT"              :  6,
-    "STALLREFLIMIT"         :  7,
-    "DISPLAYFREQ"           :  8,
-    "VERBOSITY"             :  9,
-    "SIMPLIFIER"            :  10,
-    "SCALER"                :  11,
-    "STARTER"               :  12,
-    "PRICER"                :  13,
-    "RATIOTESTER"           :  14,
-    "SYNCMODE"              :  15,
-    "READMODE"              :  16,
-    "SOLVEMODE"             :  17,
-    "CHECKMODE"             :  18,
-    "TIMER"                 :  19,
-    "HYPER_PRICING"         :  20,
-    "RATFAC_MINSTALLS"      :  21,
-    "LEASTSQ_MAXROUNDS"     :  22,
-    "SOLUTION_POLISHING"    :  23,
-    "DECOMP_ITERLIMIT"      :  24,
-    "DECOMP_MAXADDEDROWS"   :  25,
-    "DECOMP_DISPLAYFREQ"    :  26,
-    "DECOMP_VERBOSITY"      :  27,
-    "PRINTBASISMETRIC"      :  28,
-    "STATTIMER"             :  29,
+    # objective sense
+    "OBJSENSE" : 0,
+
+    # type of computational form, i.e., column or row representation
+    "REPRESENTATION" : 1,
+
+    # type of algorithm, i.e., primal or dual
+    "ALGORITHM" : 2,
+
+    # type of LU update
+    "FACTOR_UPDATE_TYPE" : 3,
+
+    # maximum number of updates without fresh factorization
+    "FACTOR_UPDATE_MAX" : 4,
+
+    # iteration limit (-1 if unlimited)
+    "ITERLIMIT" : 5,
+
+    # refinement limit (-1 if unlimited)
+    "REFLIMIT" : 6,
+
+    # stalling refinement limit (-1 if unlimited)
+    "STALLREFLIMIT" : 7,
+
+    # display frequency
+    "DISPLAYFREQ" : 8,
+
+    # verbosity level
+    "VERBOSITY" : 9,
+
+    # type of simplifier
+    "SIMPLIFIER" : 10,
+
+    # type of scaler
+    "SCALER" : 11,
+
+    # type of starter used to create crash basis
+    "STARTER" : 12,
+
+    # type of pricer
+    "PRICER" : 13,
+
+    # type of ratio test
+    "RATIOTESTER" : 14,
+
+    # mode for synchronizing real and rational LP
+    "SYNCMODE" : 15,
+
+    # mode for reading LP files
+    "READMODE" : 16,
+
+    # mode for iterative refinement strategy
+    "SOLVEMODE" : 17,
+
+    # mode for a posteriori feasibility checks
+    "CHECKMODE" : 18,
+
+    # type of timer
+    "TIMER" : 19,
+
+    # mode for hyper sparse pricing
+    "HYPER_PRICING" : 20,
+
+    # minimum number of stalling refinements since last pivot to trigger rational factorization
+    "RATFAC_MINSTALLS" : 21,
+
+    # maximum number of conjugate gradient iterations in least square scaling
+    "LEASTSQ_MAXROUNDS" : 22,
+
+    # mode for solution polishing
+    "SOLUTION_POLISHING" : 23,
+
+    # the number of iterations before the decomposition simplex initialisation is terminated.
+    "DECOMP_ITERLIMIT" : 24,
+
+    # the maximum number of rows that are added in each iteration of the decomposition based simplex
+    "DECOMP_MAXADDEDROWS" : 25,
+
+    # the iteration frequency at which the decomposition solve output is displayed.
+    "DECOMP_DISPLAYFREQ" : 26,
+
+    # the verbosity of the decomposition based simplex
+    "DECOMP_VERBOSITY" : 27,
+
+    # print condition number during the solve
+    "PRINTBASISMETRIC" : 28,
+
+    # type of timer for statistics
+    "STATTIMER" : 29,
+    }
+
+PY_BOOLPARAM = {
+    # should lifting be used to reduce range of nonzero matrix coefficients?
+    "LIFTING" : 0,
+
+    # should LP be transformed to equality form before a rational solve?
+    "EQTRANS" : 1,
+
+    # should dual infeasibility be tested in order to try to return a dual solution even if primal infeasible?
+    "TESTDUALINF" : 2,
+
+    # should a rational factorization be performed after iterative refinement?
+    "RATFAC" : 3,
+
+    # should the decomposition based dual simplex be used to solve the LP? Setting this to true forces the solve mode to
+    # SOLVEMODE_REAL and the basis representation to REPRESENTATION_ROW
+    "USEDECOMPDUALSIMPLEX" : 4,
+
+    # should the degeneracy be computed for each basis?
+    "COMPUTEDEGEN" : 5,
+
+    # should the dual of the complementary problem be used in the decomposition simplex?
+    "USECOMPDUAL" : 6,
+
+    # should row and bound violations be computed explicitly in the update of reduced problem in the decomposition simplex
+    "EXPLICITVIOL" : 7,
+
+    # should cycling solutions be accepted during iterative refinement?
+    "ACCEPTCYCLING" : 8,
+
+    # apply rational reconstruction after each iterative refinement?
+    "RATREC" : 9,
+
+    # round scaling factors for iterative refinement to powers of two?
+    "POWERSCALING" : 10,
+
+    # continue iterative refinement with exact basic solution if not optimal?
+    "RATFACJUMP" : 11,
+
+    # use bound flipping also for row representation?
+    "ROWBOUNDFLIPS" : 12,
+
+    # use persistent scaling?
+    "PERSISTENTSCALING" : 13,
+
+    # perturb the entire problem or only the relevant bounds of s single pivot?
+    "FULLPERTURBATION" : 14,
+
+    # re-optimize the original problem to get a proof (ray) of infeasibility/unboundedness?
+    "ENSURERAY" : 15,
+
+    # try to enforce that the optimal solution is a basic solution
+    "FORCEBASIC" : 16,
+
+    # enable presolver SingletonCols in PaPILO?
+    "SIMPLIFIER_SINGLETONCOLS" : 17,
+
+    # enable presolver ConstraintPropagation in PaPILO?
+    "SIMPLIFIER_CONSTRAINTPROPAGATION" : 18,
+
+    # enable presolver ParallelRowDetection in PaPILO?
+    "SIMPLIFIER_PARALLELROWDETECTION" : 19,
+
+    # enable presolver ParallelColDetection in PaPILO?
+    "SIMPLIFIER_PARALLELCOLDETECTION" : 20,
+
+    # enable presolver SingletonStuffing in PaPILO?
+    "SIMPLIFIER_SINGLETONSTUFFING" : 21,
+
+    # enable presolver DualFix in PaPILO?
+    "SIMPLIFIER_DUALFIX" : 22,
+
+    # enable presolver FixContinuous in PaPILO?
+    "SIMPLIFIER_FIXCONTINUOUS" : 23,
+
+    # enable presolver DominatedCols in PaPILO?
+    "SIMPLIFIER_DOMINATEDCOLS" : 24
+    }
+
+PY_REALPARAM = {
+    # primal feasibility tolerance
+    "FEASTOL" : 0,
+
+    # dual feasibility tolerance
+    "OPTTOL" : 1,
+
+    # general zero tolerance
+    "EPSILON_ZERO" : 2,
+
+    # zero tolerance used in factorization
+    "EPSILON_FACTORIZATION" : 3,
+
+    # zero tolerance used in update of the factorization
+    "EPSILON_UPDATE" : 4,
+
+    # pivot zero tolerance used in factorization
+    "EPSILON_PIVOT" : 5,
+
+    # infinity threshold
+    "INFTY" : 6,
+
+    # time limit in seconds (INFTY if unlimited)
+    "TIMELIMIT" : 7,
+
+    # lower limit on objective value
+    "OBJLIMIT_LOWER" : 8,
+
+    # upper limit on objective value
+    "OBJLIMIT_UPPER" : 9,
+
+    # working tolerance for feasibility in floating-point solver during iterative refinement
+    "FPFEASTOL" : 10,
+
+    # working tolerance for optimality in floating-point solver during iterative refinement
+    "FPOPTTOL" : 11,
+
+    # maximum increase of scaling factors between refinements
+    "MAXSCALEINCR" : 12,
+
+    # lower threshold in lifting (nonzero matrix coefficients with smaller absolute value will be reformulated)
+    "LIFTMINVAL" : 13,
+
+    # upper threshold in lifting (nonzero matrix coefficients with larger absolute value will be reformulated)
+    "LIFTMAXVAL" : 14,
+
+    # sparse pricing threshold (\#violations < dimension * SPARSITY_THRESHOLD activates sparse pricing)
+    "SPARSITY_THRESHOLD" : 15,
+
+    # threshold on number of rows vs. number of columns for switching from column to row representations in auto mode
+    "REPRESENTATION_SWITCH" : 16,
+
+    # geometric frequency at which to apply rational reconstruction
+    "RATREC_FREQ" : 17,
+
+    # minimal reduction (sum of removed rows/cols) to continue simplification
+    "MINRED" : 18,
+
+    # refactor threshold for nonzeros in last factorized basis matrix compared to updated basis matrix
+    "REFAC_BASIS_NNZ" : 19,
+
+    # refactor threshold for fill-in in current factor update compared to fill-in in last factorization
+    "REFAC_UPDATE_FILL" : 20,
+
+    # refactor threshold for memory growth in factorization since last refactorization
+    "REFAC_MEM_FACTOR" : 21,
+
+    # accuracy of conjugate gradient method in least squares scaling (higher value leads to more iterations)
+    "LEASTSQ_ACRCY" : 22,
+
+    # objective offset
+    "OBJ_OFFSET" : 23,
+
+    # minimal Markowitz threshold to control sparsity/stability in LU factorization
+    "MIN_MARKOWITZ" : 24,
+
+    # minimal modification threshold to apply presolve reductions
+    "SIMPLIFIER_MODIFYROWFAC" : 25,
     }
 
 PY_STATUS = {
@@ -75,221 +293,483 @@ PY_STATUS = {
     "INFEASIBLE"     :  3,  # LP has been proven to be primal infeasible.
     "INForUNBD"      :  4,   # LP is primal infeasible or unbounded.
     "OPTIMAL_UNSCALED_VIOLATIONS" :  5,   # LP has beed solved to optimality but unscaled solution contains violations.
-        }
+    }
 
-# Mapping the SoPlex enums to a python classes
-# This is required to return various values in the python code
+PY_OBJSENSE = {
+    "MINIMIZE" : -1
+    "MAXIMIZE" : 1,
+    }
+
+PY_REPRESENTATION = {
+    "AUTO"    : 0,
+    "COLUMN"  : 1,
+    "ROW"     : 2,
+    }
+
+PY_ALGORITHM = {
+    "PRIMAL"  : 0,
+    "DUAL"    : 1,
+    }
+
+PY_FACTORUPDATETYPE = {
+    "ETA"  : 0,
+    "FT"   : 1,
+    }
+
+PY_VERBOSITY = {
+    "ERROR"   : 0,
+    "WARNING" : 1,
+    "DEBUG"   : 2,
+    "NORMAL"  : 3,
+    "HIGH"    : 4,
+    "FULL"    : 5,
+    }
+
+PY_SIMPLIFIER = {
+    "OFF"        : 0,
+    "INTERNAL"   : 3,
+    "PAPILO"     : 2,
+    "AUTO"       : 1,
+    }
+
+PY_SCALAR = {
+    "OFF"     : 0,
+    "UNIEQUI" : 1,
+    "BIEQUI"  : 2,
+    "GE01"    : 3,
+    "GE08"    : 4,
+    "LEASTSQ" : 5,
+    "GEOEQUI" : 6,
+    }
+
+PY_STARTER = {
+    "OFF"     : 0,
+    "WEIGHT"  : 1,
+    "SUM"     : 2,
+    "VECTOR"  : 3,
+    }
+
+PY_PRICER = {
+    "AUTO"       : 0,
+    "DANTZIG"    : 1,
+    "PARMULT"    : 2,
+    "DEVEX"      : 3,
+    "QUICKSTEEP" : 4,
+    "STEEP"      : 5,
+    }
+
+PY_RATIOTESTER = {
+    "TEXTBOOK"      : 0,
+    "HARRIS"        : 1,
+    "FAST"          : 2,
+    "BOUNDFLIPPING" : 3,
+    }
+
+PY_SYNCMODE = {
+    "ONLYREAL"   : 0,
+    "AUTO"       : 1,
+    "MANUAL"     : 2,
+    }
+
+PY_READMODE = {
+    "REAL"       : 0,
+    "RATIONAL"   : 1,
+    }
+
+PY_SOLVEMODE = {
+    "REAL"       : 0,
+    "AUTO"       : 1,
+    "RATIONAL"   : 2,
+    }
+
+PY_CHECKMODE = {
+    "REAL"       : 0,
+    "AUTO"       : 1,
+    "RATIONAL"   : 2,
+    }
+
+PY_TIMER = {
+    "OFF"        : 0,
+    "CPU"        : 1,
+    "WALLCLOCK"  : 2,
+    }
+
+PY_HYPERPRICING = {
+    "OFF"  : 0,
+    "AUTO" : 1,
+    "ON"   : 2,
+    }
+
+PY_SOLUTIONPOLISHING = {
+    "OFF"           : 0,
+    "INTEGRALITY"   : 1,
+    "FRACTIONALITY" : 2,
+    }
 """
+
 cdef class PY_BOOLPARAM:
-    LIFTING                             =   LIFTING
-    EQTRANS                             =   EQTRANS
-    TESTDUALINF                         =   TESTDUALINF
-    RATFAC                              =   RATFAC
-    USEDECOMPDUALSIMPLEX                =   USEDECOMPDUALSIMPLEX
-    COMPUTEDEGEN                        =   COMPUTEDEGEN
-    USECOMPDUAL                         =   USECOMPDUAL
-    EXPLICITVIOL                        =   EXPLICITVIOL
-    ACCEPTCYCLING                       =   ACCEPTCYCLING
-    RATREC                              =   RATREC
-    POWERSCALING                        =   POWERSCALING
-    RATFACJUMP                          =   RATFACJUMP
-    ROWBOUNDFLIPS                       =   ROWBOUNDFLIPS
-    PERSISTENTSCALING                   =   PERSISTENTSCALING
-    FULLPERTURBATION                    =   FULLPERTURBATION
-    ENSURERAY                           =   ENSURERAY
-    FORCEBASIC                          =   FORCEBASIC
-    SIMPLIFIER_SINGLETONCOLS            =   SIMPLIFIER_SINGLETONCOLS
-    SIMPLIFIER_CONSTRAINTPROPAGATION    =   SIMPLIFIER_CONSTRAINTPROPAGATION
-    SIMPLIFIER_PARALLELROWDETECTION     =   SIMPLIFIER_PARALLELROWDETECTION
-    SIMPLIFIER_PARALLELCOLDETECTION     =   SIMPLIFIER_PARALLELCOLDETECTION
-    SIMPLIFIER_SINGLETONSTUFFING        =   SIMPLIFIER_SINGLETONSTUFFING
-    SIMPLIFIER_DUALFIX                  =   SIMPLIFIER_DUALFIX
-    SIMPLIFIER_FIXCONTINUOUS            =   SIMPLIFIER_FIXCONTINUOUS
-    SIMPLIFIER_DOMINATEDCOLS            =   SIMPLIFIER_DOMINATEDCOLS
-"""
+    # should lifting be used to reduce range of nonzero matrix coefficients?
+    LIFTING = 0
 
-"""
+    # should LP be transformed to equality form before a rational solve?
+    EQTRANS = 1
+
+    # should dual infeasibility be tested in order to try to return a dual solution even if primal infeasible?
+    TESTDUALINF = 2
+
+    # should a rational factorization be performed after iterative refinement?
+    RATFAC = 3
+
+    # should the decomposition based dual simplex be used to solve the LP? Setting this to true forces the solve mode to
+    # SOLVEMODE_REAL and the basis representation to REPRESENTATION_ROW
+    USEDECOMPDUALSIMPLEX = 4
+
+    # should the degeneracy be computed for each basis?
+    COMPUTEDEGEN = 5
+
+    # should the dual of the complementary problem be used in the decomposition simplex?
+    USECOMPDUAL = 6
+
+    # should row and bound violations be computed explicitly in the update of reduced problem in the decomposition simplex
+    EXPLICITVIOL = 7
+
+    # should cycling solutions be accepted during iterative refinement?
+    ACCEPTCYCLING = 8
+
+    # apply rational reconstruction after each iterative refinement?
+    RATREC = 9
+
+    # round scaling factors for iterative refinement to powers of two?
+    POWERSCALING = 10
+
+    # continue iterative refinement with exact basic solution if not optimal?
+    RATFACJUMP = 11
+
+    # use bound flipping also for row representation?
+    ROWBOUNDFLIPS = 12
+
+    # use persistent scaling?
+    PERSISTENTSCALING = 13
+
+    # perturb the entire problem or only the relevant bounds of s single pivot?
+    FULLPERTURBATION = 14
+
+    # re-optimize the original problem to get a proof (ray) of infeasibility/unboundedness?
+    ENSURERAY = 15
+
+    # try to enforce that the optimal solution is a basic solution
+    FORCEBASIC = 16
+
+    # enable presolver SingletonCols in PaPILO?
+    SIMPLIFIER_SINGLETONCOLS = 17
+
+    # enable presolver ConstraintPropagation in PaPILO?
+    SIMPLIFIER_CONSTRAINTPROPAGATION = 18
+
+    # enable presolver ParallelRowDetection in PaPILO?
+    SIMPLIFIER_PARALLELROWDETECTION = 19
+
+    # enable presolver ParallelColDetection in PaPILO?
+    SIMPLIFIER_PARALLELCOLDETECTION = 20
+
+    # enable presolver SingletonStuffing in PaPILO?
+    SIMPLIFIER_SINGLETONSTUFFING = 21
+
+    # enable presolver DualFix in PaPILO?
+    SIMPLIFIER_DUALFIX = 22
+
+    # enable presolver FixContinuous in PaPILO?
+    SIMPLIFIER_FIXCONTINUOUS = 23
+
+    # enable presolver DominatedCols in PaPILO?
+    SIMPLIFIER_DOMINATEDCOLS = 24
+
 cdef class PY_INTPARAM:
-    PYOBJSENSE                =   OBJSENSE
-    REPRESENTATION          =   REPRESENTATION
-    ALGORITHM               =   ALGORITHM
-    FACTOR_UPDATE_TYPE      =   FACTOR_UPDATE_TYPE
-    FACTOR_UPDATE_MAX       =   FACTOR_UPDATE_MAX
-    ITERLIMIT               =   ITERLIMIT
-    REFLIMIT                =   REFLIMIT
-    STALLREFLIMIT           =   STALLREFLIMIT
-    DISPLAYFREQ             =   DISPLAYFREQ
-    VERBOSITY               =   VERBOSITY
-    SIMPLIFIER              =   SIMPLIFIER
-    SCALER                  =   SCALER
-    STARTER                 =   STARTER
-    PRICER                  =   PRICER
-    RATIOTESTER             =   RATIOTESTER
-    SYNCMODE                =   SYNCMODE
-    READMODE                =   READMODE
-    SOLVEMODE               =   SOLVEMODE
-    CHECKMODE               =   CHECKMODE
-    TIMER                   =   TIMER
-    HYPER_PRICING           =   HYPER_PRICING
-    RATFAC_MINSTALLS        =   RATFAC_MINSTALLS
-    LEASTSQ_MAXROUNDS       =   LEASTSQ_MAXROUNDS
-    SOLUTION_POLISHING      =   SOLUTION_POLISHING
-    DECOMP_ITERLIMIT        =   DECOMP_ITERLIMIT
-    DECOMP_MAXADDEDROWS     =   DECOMP_MAXADDEDROWS
-    DECOMP_DISPLAYFREQ      =   DECOMP_DISPLAYFREQ
-    DECOMP_VERBOSITY        =   DECOMP_VERBOSITY
-    PRINTBASISMETRIC        =   PRINTBASISMETRIC
-    STATTIMER               =   STATTIMER
-"""
+    # objective sense
+    OBJSENSE = 0
 
-"""
+    # type of computational form i.e., column or row representation
+    REPRESENTATION = 1
+
+    # type of algorithm i.e., primal or dual
+    ALGORITHM = 2
+
+    # type of LU update
+    FACTOR_UPDATE_TYPE = 3
+
+    # maximum number of updates without fresh factorization
+    FACTOR_UPDATE_MAX = 4
+
+    # iteration limit (-1 if unlimited)
+    ITERLIMIT = 5
+
+    # refinement limit (-1 if unlimited)
+    REFLIMIT = 6
+
+    # stalling refinement limit (-1 if unlimited)
+    STALLREFLIMIT = 7
+
+    # display frequency
+    DISPLAYFREQ = 8
+
+    # verbosity level
+    VERBOSITY = 9
+
+    # type of simplifier
+    SIMPLIFIER = 10
+
+    # type of scaler
+    SCALER = 11
+
+    # type of starter used to create crash basis
+    STARTER = 12
+
+    # type of pricer
+    PRICER = 13
+
+    # type of ratio test
+    RATIOTESTER = 14
+
+    # mode for synchronizing real and rational LP
+    SYNCMODE = 15
+
+    # mode for reading LP files
+    READMODE = 16
+
+    # mode for iterative refinement strategy
+    SOLVEMODE = 17
+
+    # mode for a posteriori feasibility checks
+    CHECKMODE = 18
+
+    # type of timer
+    TIMER = 19
+
+    # mode for hyper sparse pricing
+    HYPER_PRICING = 20
+
+    # minimum number of stalling refinements since last pivot to trigger rational factorization
+    RATFAC_MINSTALLS = 21
+
+    # maximum number of conjugate gradient iterations in least square scaling
+    LEASTSQ_MAXROUNDS = 22
+
+    # mode for solution polishing
+    SOLUTION_POLISHING = 23
+
+    # the number of iterations before the decomposition simplex initialisation is terminated.
+    DECOMP_ITERLIMIT = 24
+
+    # the maximum number of rows that are added in each iteration of the decomposition based simplex
+    DECOMP_MAXADDEDROWS = 25
+
+    # the iteration frequency at which the decomposition solve output is displayed.
+    DECOMP_DISPLAYFREQ = 26
+
+    # the verbosity of the decomposition based simplex
+    DECOMP_VERBOSITY = 27
+
+    # print condition number during the solve
+    PRINTBASISMETRIC = 28
+
+    # type of timer for statistics
+    STATTIMER = 29
+
 cdef class PY_REALPARAM:
-    FEASTOL                     =   FEASTOL
-    OPTTOL                      =   OPTTOL
-    EPSILON_ZERO                =   EPSILON_ZERO
-    EPSILON_FACTORIZATION       =   EPSILON_FACTORIZATION
-    EPSILON_UPDATE              =   EPSILON_UPDATE
-    EPSILON_PIVOT               =   EPSILON_PIVOT
-    INFTY                       =   INFTY
-    TIMELIMIT                   =   TIMELIMIT
-    OBJLIMIT_LOWER              =   OBJLIMIT_LOWER
-    OBJLIMIT_UPPER              =   OBJLIMIT_UPPER
-    FPFEASTOL                   =   FPFEASTOL
-    FPOPTTOL                    =   FPOPTTOL
-    MAXSCALEINCR                =   MAXSCALEINCR
-    LIFTMINVAL                  =   LIFTMINVAL
-    LIFTMAXVAL                  =   LIFTMAXVAL
-    SPARSITY_THRESHOLD          =   SPARSITY_THRESHOLD
-    REPRESENTATION_SWITCH       =   REPRESENTATION_SWITCH
-    RATREC_FREQ                 =   RATREC_FREQ
-    MINRED                      =   MINRED
-    REFAC_BASIS_NNZ             =   REFAC_BASIS_NNZ
-    REFAC_UPDATE_FILL           =   REFAC_UPDATE_FILL
-    REFAC_MEM_FACTOR            =   REFAC_MEM_FACTOR
-    LEASTSQ_ACRCY               =   LEASTSQ_ACRCY
-    OBJ_OFFSET                  =   OBJ_OFFSET
-    MIN_MARKOWITZ               =   MIN_MARKOWITZ
-    SIMPLIFIER_MODIFYROWFAC     =   SIMPLIFIER_MODIFYROWFAC
-"""
+    # primal feasibility tolerance
+    FEASTOL = 0
 
-"""
+    # dual feasibility tolerance
+    OPTTOL = 1
+
+    # general zero tolerance
+    EPSILON_ZERO = 2
+
+    # zero tolerance used in factorization
+    EPSILON_FACTORIZATION = 3
+
+    # zero tolerance used in update of the factorization
+    EPSILON_UPDATE = 4
+
+    # pivot zero tolerance used in factorization
+    EPSILON_PIVOT = 5
+
+    # infinity threshold
+    INFTY = 6
+
+    # time limit in seconds (INFTY if unlimited)
+    TIMELIMIT = 7
+
+    # lower limit on objective value
+    OBJLIMIT_LOWER = 8
+
+    # upper limit on objective value
+    OBJLIMIT_UPPER = 9
+
+    # working tolerance for feasibility in floating-point solver during iterative refinement
+    FPFEASTOL = 10
+
+    # working tolerance for optimality in floating-point solver during iterative refinement
+    FPOPTTOL = 11
+
+    # maximum increase of scaling factors between refinements
+    MAXSCALEINCR = 12
+
+    # lower threshold in lifting (nonzero matrix coefficients with smaller absolute value will be reformulated)
+    LIFTMINVAL = 13
+
+    # upper threshold in lifting (nonzero matrix coefficients with larger absolute value will be reformulated)
+    LIFTMAXVAL = 14
+
+    # sparse pricing threshold (\#violations < dimension * SPARSITY_THRESHOLD activates sparse pricing)
+    SPARSITY_THRESHOLD = 15
+
+    # threshold on number of rows vs. number of columns for switching from column to row representations in auto mode
+    REPRESENTATION_SWITCH = 16
+
+    # geometric frequency at which to apply rational reconstruction
+    RATREC_FREQ = 17
+
+    # minimal reduction (sum of removed rows/cols) to continue simplification
+    MINRED = 18
+
+    # refactor threshold for nonzeros in last factorized basis matrix compared to updated basis matrix
+    REFAC_BASIS_NNZ = 19
+
+    # refactor threshold for fill-in in current factor update compared to fill-in in last factorization
+    REFAC_UPDATE_FILL = 20
+
+    # refactor threshold for memory growth in factorization since last refactorization
+    REFAC_MEM_FACTOR = 21
+
+    # accuracy of conjugate gradient method in least squares scaling (higher value leads to more iterations)
+    LEASTSQ_ACRCY = 22
+
+    # objective offset
+    OBJ_OFFSET = 23
+
+    # minimal Markowitz threshold to control sparsity/stability in LU factorization
+    MIN_MARKOWITZ = 24
+
+    # minimal modification threshold to apply presolve reductions
+    SIMPLIFIER_MODIFYROWFAC = 25
+
 cdef class PY_STATUS:
-    ERROR                        =  ERROR
-    NO_RATIOTESTER               =  NO_RATIOTESTER
-    NO_PRICER                    =  NO_PRICER
-    NO_SOLVER                    =  NO_SOLVER
-    NOT_INIT                     =  NOT_INIT
-    ABORT_EXDECOMP               =  ABORT_EXDECOMP
-    ABORT_DECOMP                 =  ABORT_DECOMP
-    ABORT_CYCLING                =  ABORT_CYCLING
-    ABORT_TIME                   =  ABORT_TIME
-    ABORT_ITER                   =  ABORT_ITER
-    ABORT_VALUE                  =  ABORT_VALUE
-    SINGULAR                     =  SINGULAR
-    NO_PROBLEM                   =  NO_PROBLEM
-    REGULAR                      =  REGULAR
-    RUNNING                      =  RUNNING
-    UNKNOWN                      =  UNKNOWN
-    OPTIMAL                      =  OPTIMAL
-    UNBOUNDED                    =  UNBOUNDED
-    INFEASIBLE                   =  INFEASIBLE
-    INForUNBD                    =  INForUNBD
-    OPTIMAL_UNSCALED_VIOLATIONS  =  OPTIMAL_UNSCALED_VIOLATIONS
-"""
+    ERROR          = -15 # an error occured.
+    NO_RATIOTESTER = -14 # No ratiotester loaded
+    NO_PRICER      = -13 # No pricer loaded
+    NO_SOLVER      = -12 # No linear solver loaded
+    NOT_INIT       = -11 # not initialised error
+    ABORT_EXDECOMP = -10 # solve() aborted to exit decomposition simplex
+    ABORT_DECOMP   = -9  # solve() aborted due to commence decomposition simplex
+    ABORT_CYCLING  = -8  # solve() aborted due to detection of cycling.
+    ABORT_TIME     = -7  # solve() aborted due to time limit.
+    ABORT_ITER     = -6  # solve() aborted due to iteration limit.
+    ABORT_VALUE    = -5  # solve() aborted due to objective limit.
+    SINGULAR       = -4  # Basis is singular, numerical troubles?
+    NO_PROBLEM     = -3  # No Problem has been loaded.
+    REGULAR        = -2  # LP has a usable Basis (maybe LP is changed).
+    RUNNING        = -1  # algorithm is running
+    UNKNOWN        =  0  # nothing known on loaded problem.
+    OPTIMAL        =  1  # LP has been solved to optimality.
+    UNBOUNDED      =  2  # LP has been proven to be primal unbounded.
+    INFEASIBLE     =  3  # LP has been proven to be primal infeasible.
+    INForUNBD      =  4   # LP is primal infeasible or unbounded.
+    OPTIMAL_UNSCALED_VIOLATIONS =  5   # LP has beed solved to optimality but unscaled solution contains violations.
 
 cdef class PY_OBJSENSE:
-    MAXIMIZE = OBJSENSE_MAXIMIZE
-    MINIMIZE = OBJSENSE_MINIMIZE
+    MINIMIZE = -1
+    MAXIMIZE = 1
 
 cdef class PY_REPRESENTATION:
-    AUTO    = REPRESENTATION_AUTO
-    COLUMN  = REPRESENTATION_COLUMN
-    ROW     = REPRESENTATION_ROW
+    AUTO    = 0
+    COLUMN  = 1
+    ROW     = 2
 
 cdef class PY_ALGORITHM:
-    PRIMAL  = ALGORITHM_PRIMAL
-    DUAL    = ALGORITHM_DUAL
+    PRIMAL  = 0
+    DUAL    = 1
 
 cdef class PY_FACTORUPDATETYPE:
-    ETA  = FACTOR_UPDATE_TYPE_ETA
-    FT   = FACTOR_UPDATE_TYPE_FT
+    ETA  = 0
+    FT   = 1
 
 cdef class PY_VERBOSITY:
-    ERROR   = VERBOSITY_ERROR
-    WARNING = VERBOSITY_WARNING
-    DEBUG   = VERBOSITY_DEBUG
-    NORMAL  = VERBOSITY_NORMAL
-    HIGH    = VERBOSITY_HIGH
-    FULL    = VERBOSITY_FULL
+    ERROR   = 0
+    WARNING = 1
+    DEBUG   = 2
+    NORMAL  = 3
+    HIGH    = 4
+    FULL    = 5
 
 cdef class PY_SIMPLIFIER:
-    OFF        = SIMPLIFIER_OFF
-    INTERNAL   = SIMPLIFIER_INTERNAL
-    PAPILO     = SIMPLIFIER_PAPILO
-    AUTO       = SIMPLIFIER_AUTO
+    OFF        = 0
+    INTERNAL   = 3
+    PAPILO     = 2
+    AUTO       = 1
 
 cdef class PY_SCALAR:
-    OFF     = SCALER_OFF
-    UNIEQUI = SCALER_UNIEQUI
-    BIEQUI  = SCALER_BIEQUI
-    GE01    = SCALER_GEO1
-    GE08    = SCALER_GEO8
-    LEASTSQ = SCALER_LEASTSQ
-    GEOEQUI = SCALER_GEOEQUI
+    OFF     = 0
+    UNIEQUI = 1
+    BIEQUI  = 2
+    GE01    = 3
+    GE08    = 4
+    LEASTSQ = 5
+    GEOEQUI = 6
 
 cdef class PY_STARTER:
-    OFF     = STARTER_OFF
-    WEIGHT  = STARTER_WEIGHT
-    SUM     = STARTER_SUM
-    VECTOR  = STARTER_VECTOR
+    OFF     = 0
+    WEIGHT  = 1
+    SUM     = 2
+    VECTOR  = 3
 
 cdef class PY_PRICER:
-    AUTO       = PRICER_AUTO
-    DANTZIG    = PRICER_DANTZIG
-    PARMULT    = PRICER_PARMULT
-    DEVEX      = PRICER_DEVEX
-    QUICKSTEEP = PRICER_QUICKSTEEP
-    STEEP      = PRICER_STEEP
+    AUTO       = 0
+    DANTZIG    = 1
+    PARMULT    = 2
+    DEVEX      = 3
+    QUICKSTEEP = 4
+    STEEP      = 5
 
 cdef class PY_RATIOTESTER:
-    TEXTBOOK      = RATIOTESTER_TEXTBOOK
-    HARRIS        = RATIOTESTER_HARRIS
-    FAST          = RATIOTESTER_FAST
-    BOUNDFLIPPING = RATIOTESTER_BOUNDFLIPPING
+    TEXTBOOK      = 0
+    HARRIS        = 1
+    FAST          = 2
+    BOUNDFLIPPING = 3
 
 cdef class PY_SYNCMODE:
-    ONLYREAL   = SYNCMODE_ONLYREAL
-    AUTO       = SYNCMODE_AUTO
-    MANUAL     = SYNCMODE_MANUAL
+    ONLYREAL   = 0
+    AUTO       = 1
+    MANUAL     = 2
 
 cdef class PY_READMODE:
-    REAL       = READMODE_REAL
-    RATIONAL   = READMODE_RATIONAL
+    REAL       = 0
+    RATIONAL   = 1
 
 cdef class PY_SOLVEMODE:
-    REAL       = SOLVEMODE_REAL
-    AUTO       = SOLVEMODE_AUTO
-    RATIONAL   = SOLVEMODE_RATIONAL
+    REAL       = 0
+    AUTO       = 1
+    RATIONAL   = 2
 
 cdef class PY_CHECKMODE:
-    REAL       = CHECKMODE_REAL
-    AUTO       = CHECKMODE_AUTO
-    RATIONAL   = CHECKMODE_RATIONAL
+    REAL       = 0
+    AUTO       = 1
+    RATIONAL   = 2
 
 cdef class PY_TIMER:
-    OFF        = TIMER_OFF
-    CPU        = TIMER_CPU
-    WALLCLOCK  = TIMER_WALLCLOCK
+    OFF        = 0
+    CPU        = 1
+    WALLCLOCK  = 2
 
 cdef class PY_HYPERPRICING:
-    OFF  = HYPER_PRICING_OFF
-    AUTO = HYPER_PRICING_AUTO
-    ON   = HYPER_PRICING_ON
+    OFF  = 0
+    AUTO = 1
+    ON   = 2
 
 cdef class PY_SOLUTIONPOLISHING:
-    OFF           = POLISHING_OFF
-    INTEGRALITY   = POLISHING_INTEGRALITY
-    FRACTIONALITY = POLISHING_FRACTIONALITY
+    OFF           = 0
+    INTEGRALITY   = 1
+    FRACTIONALITY = 2
 
 cdef class Soplex:
     """Base class for SoPlex functions """
@@ -341,9 +821,17 @@ cdef class Soplex:
 #        if self._soplex is not NULL:
 #            SoPlex_setRational(self._soplex)
 
+    def setBoolParam(self, paramName, paramSetting):
+        if self._soplex is not NULL:
+            SoPlex_setBoolParam(self._soplex, paramName, paramSetting)
+
     def setIntParam(self, paramName, paramSetting):
-        if self._soplex is not NULL and paramName in PY_INTPARAM:
-            SoPlex_setIntParam(self._soplex, PY_INTPARAM[paramName], paramSetting)
+        if self._soplex is not NULL:
+            SoPlex_setIntParam(self._soplex, paramName, paramSetting)
+
+    def setRealParam(self, paramName, paramSetting):
+        if self._soplex is not NULL:
+            SoPlex_setRealParam(self._soplex, paramName, paramSetting)
 
     def getIntParam(self, paramName):
         if self._soplex is not NULL:
