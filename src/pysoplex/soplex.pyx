@@ -472,7 +472,7 @@ cdef class Soplex:
 
             free(_coeffs)
 
-    def getPrimalSolution(self):
+    def getPrimalSolutionReal(self):
         #TODO: need to pass dim and assert if dim==_ncols?
         if self._soplex is not NULL:
             _ncols = self.getNCols()
@@ -487,7 +487,7 @@ cdef class Soplex:
             free(_primsol)
             return primsol
 
-    def getDualSolution(self):
+    def getDualSolutionReal(self):
         #TODO: need to pass dim and assert if dim==_nrows?
         if self._soplex is not NULL:
             _nrows = self.getNRows()
@@ -506,7 +506,7 @@ cdef class Soplex:
         if self._soplex is not NULL:
             return SoPlex_optimize(self._soplex)
 
-    def changeObjVector(self, coeffs):
+    def changeObjVectorReal(self, coeffs):
         #TODO: need to pass dim and assert if dim==_ncols?
         if self._soplex is not NULL:
             _ncols = self.getNCols()
@@ -519,7 +519,7 @@ cdef class Soplex:
 
             free(_coeffs)
 
-    def changeLHS(self, coeffs):
+    def changeLHSReal(self, coeffs):
         #TODO: need to pass dim and assert if dim==_nrows?
         if self._soplex is not NULL:
             _nrows = self.getNRows()
@@ -532,7 +532,7 @@ cdef class Soplex:
 
             free(_coeffs)
 
-    def changeRHS(self, coeffs):
+    def changeRHSReal(self, coeffs):
         #TODO: need to pass dim and assert if dim==_nrows?
         if self._soplex is not NULL:
             _nrows = self.getNRows()
@@ -545,11 +545,11 @@ cdef class Soplex:
 
             free(_coeffs)
 
-    def getObjValue(self):
+    def getObjValueReal(self):
         if self._soplex is not NULL:
             return SoPlex_objValueReal(self._soplex)
 
-    def changeColBounds(self, lb, ub):
+    def changeColBoundsReal(self, lb, ub):
         #TODO: need to pass dim and assert if dim==_ncols?
         if self._soplex is not NULL:
             _ncols = self.getNCols()
@@ -565,21 +565,21 @@ cdef class Soplex:
             free(_ub)
             free(_lb)
 
-    def changeColBound(self, colid, lb, ub):
+    def changeColBoundReal(self, colid, lb, ub):
         if self._soplex is not NULL:
             _ncols = self.getNCols()
             assert(0 <= colid <= _ncols)
 
             SoPlex_changeVarBoundsReal(self._soplex, colid, lb, ub)
 
-    def changeColUB(self, colid, ub):
+    def changeColUBReal(self, colid, ub):
         if self._soplex is not NULL:
             _ncols = self.getNCols()
             assert(0 <= colid <= _ncols)
 
             SoPlex_changeVarUpperReal(self._soplex, colid, ub)
 
-    def getColUBs(self):
+    def getColUBsReal(self):
         #TODO: need to pass dim and assert if dim==_ncols?
         if self._soplex is not NULL:
             _ncols = self.getNCols()
