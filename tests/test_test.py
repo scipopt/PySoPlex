@@ -10,8 +10,8 @@ def test_test():
     success = s.readInstanceFile("/scratch/opt/sbolusani/sw/PySoPlex/instances/egout_lp_version.mps")
     s.setBoolParam(BOOLPARAM.LIFTING, 1)
     s.setIntParam(INTPARAM.VERBOSITY, VERBOSITY.ERROR)
-    s.solveLP()
-    obj_val = s.getObjValue()
+    s.optimize()
+    obj_val = s.getObjValueReal()
 
     print("LP solved successfully with objective value = ", obj_val)
 
@@ -23,8 +23,8 @@ def test_test_again():
     success = s.readInstanceFile("/scratch/opt/sbolusani/sw/PySoPlex/instances/egout_lp_version.mps")
     s.setIntParam(INTPARAM.VERBOSITY, VERBOSITY.ERROR)
     s.setIntParam(INTPARAM.OBJSENSE, OBJSENSE.MINIMIZE)
-    s.solveLP()
-    obj_val = s.getObjValue()
+    s.optimize()
+    obj_val = s.getObjValueReal()
 
     print("LP solved again successfully with objective value = ", obj_val)
 

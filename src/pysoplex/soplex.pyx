@@ -461,6 +461,10 @@ cdef class Soplex:
 
             free(_coeffs)
 
+    def removeColReal(self, colid):
+        if self._soplex is not NULL:
+            SoPlex_removeColReal(self._soplex, colid)
+
     def addRowReal(self, coeffs, size, nnz, lb, ub):
         if self._soplex is not NULL:
             _coeffs = <double*> malloc(nnz * sizeof(double));
@@ -471,6 +475,10 @@ cdef class Soplex:
             SoPlex_addRowReal(self._soplex, _coeffs, size, nnz, lb, ub)
 
             free(_coeffs)
+
+    def removeRowReal(self, rowid):
+        if self._soplex is not NULL:
+            SoPlex_removeRowReal(self._soplex, rowid)
 
     def getPrimalSolutionReal(self):
         #TODO: need to pass dim and assert if dim==_ncols?
@@ -502,7 +510,7 @@ cdef class Soplex:
             free(_dualsol)
             return dualsol
 
-    def solveLP(self):
+    def optimize(self):
         if self._soplex is not NULL:
             return SoPlex_optimize(self._soplex)
 
@@ -519,37 +527,73 @@ cdef class Soplex:
 
             free(_coeffs)
 
-    def changeLHSReal(self, coeffs):
+    def changeLHSReal(self, lhs):
         #TODO: need to pass dim and assert if dim==_nrows?
         if self._soplex is not NULL:
             _nrows = self.getNRows()
-            _coeffs = <double*> malloc(_nrows * sizeof(double))
+            _lhs = <double*> malloc(_nrows * sizeof(double))
 
             for i in range(_nrows):
-                _coeffs[i] = coeffs[i]
+                _lhs[i] = lhs[i]
 
-            SoPlex_changeLhsReal(self._soplex, _coeffs, _nrows)
+            SoPlex_changeLhsReal(self._soplex, _lhs, _nrows)
 
-            free(_coeffs)
+            free(_lhs)
 
-    def changeRHSReal(self, coeffs):
+    def changeRowLHSReal(self, rowid, lhs):
+        if self._soplex is not NULL:
+            _nrows = self.getNRows()
+            assert(0 <= rowid <= _nrows)
+
+            SoPlex_changeRowLhsReal(self._soplex, rowid, lhs)
+
+    def changeRHSReal(self, rhs):
         #TODO: need to pass dim and assert if dim==_nrows?
         if self._soplex is not NULL:
             _nrows = self.getNRows()
-            _coeffs = <double*> malloc(_nrows * sizeof(double))
+            _rhs = <double*> malloc(_nrows * sizeof(double))
 
             for i in range(_nrows):
-                _coeffs[i] = coeffs[i]
+                _rhs[i] = rhs[i]
 
-            SoPlex_changeRhsReal(self._soplex, _coeffs, _nrows)
+            SoPlex_changeRhsReal(self._soplex, _rhs, _nrows)
 
-            free(_coeffs)
+            free(_rhs)
+
+    def changeRowRHSReal(self, rowid, rhs):
+        if self._soplex is not NULL:
+            _nrows = self.getNRows()
+            assert(0 <= rowid <= _nrows)
+
+            SoPlex_changeRowRhsReal(self._soplex, rowid, rhs)
+
+    def changeRangeReal(self, lhs, rhs):
+        #TODO: need to pass dim and assert if dim==_nrows?
+        if self._soplex is not NULL:
+            _nrows = self.getNRows()
+            _lhs = <double*> malloc(_nrows * sizeof(double))
+            _rhs = <double*> malloc(_nrows * sizeof(double))
+
+            for i in range(_nrows):
+                _lhs[i] = lhs[i]
+                _rhs[i] = rhs[i]
+
+            SoPlex_changeRangeReal(self._soplex, _lhs, _rhs, _nrows)
+            free(_rhs)
+            free(_lhs)
+
+    def changeRowRangeReal(self, rowid, lhs, rhs):
+        if self._soplex is not NULL:
+            _nrows = self.getNRows()
+            assert(0 <= rowid <= _nrows)
+
+            SoPlex_changeRowRangeReal(self._soplex, rowid, lhs, rhs)
 
     def getObjValueReal(self):
         if self._soplex is not NULL:
             return SoPlex_objValueReal(self._soplex)
 
-    def changeColBoundsReal(self, lb, ub):
+    def changeBoundsReal(self, lb, ub):
         #TODO: need to pass dim and assert if dim==_ncols?
         if self._soplex is not NULL:
             _ncols = self.getNCols()
@@ -565,12 +609,60 @@ cdef class Soplex:
             free(_ub)
             free(_lb)
 
-    def changeColBoundReal(self, colid, lb, ub):
+    def changeColBoundsReal(self, colid, lb, ub):
         if self._soplex is not NULL:
             _ncols = self.getNCols()
             assert(0 <= colid <= _ncols)
 
             SoPlex_changeVarBoundsReal(self._soplex, colid, lb, ub)
+
+    def changeLBsReal(self, lb):
+        #TODO: need to pass dim and assert if dim==_ncols?
+        if self._soplex is not NULL:
+            _ncols = self.getNCols()
+            _lb = <double*> malloc(_ncols * sizeof(double))
+
+            for i in range(_ncols):
+                _lb[i] = lb[i]
+
+            SoPlex_changeLowerReal(self._soplex, _lb, _ncols)
+
+            free(_lb)
+
+    def changeColLBReal(self, colid, lb):
+        if self._soplex is not NULL:
+            _ncols = self.getNCols()
+            assert(0 <= colid <= _ncols)
+
+            SoPlex_changeVarLowerReal(self._soplex, colid, lb)
+
+    def getColLBsReal(self):
+        #TODO: need to pass dim and assert if dim==_ncols?
+        if self._soplex is not NULL:
+            _ncols = self.getNCols()
+            _lb = <double*> malloc(_ncols * sizeof(double))
+
+            SoPlex_getLowerReal(self._soplex, _lb, _ncols)
+
+            lb = [0.0]*_ncols
+            for i in range(_ncols):
+                lb[i] = _lb[i]
+
+            free(_lb)
+            return lb
+
+    def changeUBsReal(self, ub):
+        #TODO: need to pass dim and assert if dim==_ncols?
+        if self._soplex is not NULL:
+            _ncols = self.getNCols()
+            _ub = <double*> malloc(_ncols * sizeof(double))
+
+            for i in range(_ncols):
+                _ub[i] = ub[i]
+
+            SoPlex_changeUpperReal(self._soplex, _ub, _ncols)
+
+            free(_ub)
 
     def changeColUBReal(self, colid, ub):
         if self._soplex is not NULL:
@@ -591,4 +683,5 @@ cdef class Soplex:
             for i in range(_ncols):
                 ub[i] = _ub[i]
 
+            free(_ub)
             return ub
