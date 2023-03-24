@@ -79,8 +79,17 @@ cdef extern from "soplex_interface.h":
     # gets dual solution
     void SoPlex_getDualReal(void* soplex, double* dual, int dim)
 
-    # optimizes the given LP
+    # optimizes the given LP and returns solver status
     int SoPlex_optimize(void* soplex)
+
+    # returns the current solver status **/
+    int SoPlex_getStatus(void* soplex);
+
+    # returns the time spent in last call to solve **/
+    double SoPlex_getSolvingTime(void* soplex);
+
+    # returns the number of iteration in last call to solve **/
+    int SoPlex_getNumIterations(void* soplex);
 
     # changes objective function vector to obj
     void SoPlex_changeObjReal(void* soplex, double* obj, int dim)

@@ -514,6 +514,18 @@ cdef class Soplex:
         if self._soplex is not NULL:
             return SoPlex_optimize(self._soplex)
 
+    def getStatus(self):
+        if self._soplex is not NULL:
+            return SoPlex_getStatus(self._soplex)
+
+    def getSolvingTime(self):
+        if self._soplex is not NULL:
+            return SoPlex_getSolvingTime(self._soplex)
+
+    def getNIterations(self):
+        if self._soplex is not NULL:
+            return SoPlex_getNumIterations(self._soplex)
+
     def changeObjVectorReal(self, coeffs):
         #TODO: need to pass dim and assert if dim==_ncols?
         if self._soplex is not NULL:
