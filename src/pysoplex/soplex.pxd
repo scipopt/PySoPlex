@@ -79,6 +79,9 @@ cdef extern from "soplex_interface.h":
     # gets dual solution
     void SoPlex_getDualReal(void* soplex, double* dual, int dim)
 
+    # gets reduced cost vector
+    void SoPlex_getRedCostReal(void* soplex, double* rc, int dim)
+
     # optimizes the given LP and returns solver status
     int SoPlex_optimize(void* soplex)
 

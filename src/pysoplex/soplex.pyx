@@ -510,6 +510,21 @@ cdef class Soplex:
             free(_dualsol)
             return dualsol
 
+    def getReducedCostReal(self):
+        #TODO: need to pass dim and assert if dim==_ncols?
+        if self._soplex is not NULL:
+            _ncols = self.getNCols()
+            _rc = <double*> malloc(_ncols * sizeof(double))
+
+            SoPlex_getRedCostReal(self._soplex, _rc, _ncols)
+
+            rc = [0.0]*_ncols
+            for i in range(_ncols):
+                rc[i] = _rc[i]
+
+            free(_rc)
+            return rc
+
     def optimize(self):
         if self._soplex is not NULL:
             return SoPlex_optimize(self._soplex)
