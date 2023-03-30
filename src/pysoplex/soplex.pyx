@@ -452,7 +452,7 @@ cdef class Soplex:
 
     def addColReal(self, coeffs, size, nnz, objval, lb, ub):
         if self._soplex is not NULL:
-            _coeffs = <double*> malloc(nnz * sizeof(double))
+            _coeffs = <double*> malloc(size * sizeof(double))
 
             for i in range(len(coeffs)):
                 _coeffs[i] = coeffs[i]
@@ -467,7 +467,7 @@ cdef class Soplex:
 
     def addRowReal(self, coeffs, size, nnz, lb, ub):
         if self._soplex is not NULL:
-            _coeffs = <double*> malloc(nnz * sizeof(double));
+            _coeffs = <double*> malloc(size * sizeof(double));
 
             for i in range(len(coeffs)):
                 _coeffs[i] = coeffs[i]
