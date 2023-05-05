@@ -19,6 +19,10 @@ cdef extern from "soplex_interface.h":
     # reads settings from filename and returns true on success
     int SoPlex_readSettingsFile(void* soplex, const char* filename)
 
+    # writes LP file in LP or MPS format (format is chosen from the extension in
+    # filename)
+    void SoPlex_writeFileReal(void* soplex, char* filename)
+
     # clears the (floating point) LP
     void SoPlex_clearLPReal(void* soplex)
 

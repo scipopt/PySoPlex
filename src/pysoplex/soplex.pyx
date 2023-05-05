@@ -418,6 +418,10 @@ cdef class Soplex:
         if self._soplex is not NULL:
             return SoPlex_readSettingsFile(self._soplex, str_conversion(fileName))
 
+    def writeInstanceReal(self, fileName):
+        if self._soplex is not NULL:
+            SoPlex_writeFileReal(self._soplex, str_conversion(fileName))
+
     def clearLPReal(self):
         if self._soplex is not NULL:
             SoPlex_clearLPReal(self._soplex)
