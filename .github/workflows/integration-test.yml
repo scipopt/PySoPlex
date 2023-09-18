@@ -142,6 +142,7 @@ jobs:
       - name: Install PySoPlex
         run: |
           export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:${{ runner.workspace }}/PySoPlex/soplex/build/install/lib
           python -m pip install .
 
       - name: Run pysoplex tests
