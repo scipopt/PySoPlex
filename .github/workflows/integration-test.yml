@@ -80,8 +80,8 @@ jobs:
           mkdir build
           cd build
           cmake .. -DCMAKE_INSTALL_PREFIX=install
-          make -j
-          make install
+          cmake --build .
+          cmake --install .
 
       - name: Setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
