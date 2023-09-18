@@ -146,5 +146,14 @@ cdef extern from "soplex_interface.h":
     # changes upper bound vector of columns to ub
     void SoPlex_getUpperReal(void* soplex, double* ub, int dim)
 
+    # get objective vector
+    void SoPlex_getObjReal(void* soplex, double* obj, int ncols)
+
+    # get row bounds
+    void SoPlex_getRowBoundsReal(void* soplex, int rowid, double* lhs, double* rhs)
+
+    # get row coefficients of row rowid in sparse form
+    void SoPlex_getRowVectorReal(void* soplex, int rowid, int* nnz, long* inds, double* coefs)
+
 cdef class Soplex:
     cdef void* _soplex
