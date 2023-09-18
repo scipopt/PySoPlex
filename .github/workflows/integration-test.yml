@@ -23,7 +23,7 @@ jobs:
 
       - name: Cache dependencies (soplex)
         id: cache-soplex
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ${{ runner.workspace }}/PySoPlex
@@ -114,7 +114,7 @@ jobs:
 
       - name: Cache dependencies (soplex)
         id: cache-soplex
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ${{ runner.workspace }}/PySoPlex
