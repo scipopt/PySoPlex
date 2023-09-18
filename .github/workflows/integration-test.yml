@@ -23,8 +23,8 @@ jobs:
 
       - name: Install dependencies (soplex)
         run: |
-          apt-get update
-          apt-get install git cmake gcc g++
+          sudo apt-get update
+          sudo apt-get install git cmake gcc g++
           git clone -b C_interface_update https://github.com/scipopt/soplex.git
           cd soplex
           mkdir build
