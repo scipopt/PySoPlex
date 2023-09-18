@@ -45,12 +45,12 @@ jobs:
 
       - name: Install PySoPlex
         run: |
-          export SOPLEX_DIR=${{ runner.workspace }}/soplex/build/install
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
           python -m pip install .
 
       - name: Run pysoplex tests
         run: |
-          export SOPLEX_DIR=${{ runner.workspace }}/soplex/build/install
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
           py.test
 
 #  Windows-test:
@@ -141,12 +141,12 @@ jobs:
 
       - name: Install PySoPlex
         run: |
-          export SOPLEX_DIR=${{ runner.workspace }}/soplex/build/install
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
           python -m pip install .
 
       - name: Run pysoplex tests
         run: |
-          export SOPLEX_DIR=${{ runner.workspace }}/soplex/build/install
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
           py.test
 
 #  ### if you need valgrind on mac, you can install it via
