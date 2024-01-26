@@ -75,7 +75,7 @@ jobs:
       - name: Install dependencies (soplex)
         shell: powershell
         run: |
-          git clone -b bugfix-70 https://github.com/scipopt/soplex.git
+          git clone -b fix-285-strncpy-issue https://github.com/scipopt/soplex.git
           cd soplex
           mkdir build
           cd build
