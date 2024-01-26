@@ -100,7 +100,7 @@ jobs:
         run: |
           $Env:PATH = "${{ runner.workspace }}\PySoPlex\soplex\build\install\bin;%PATH%"
           $Env:SOPLEX_DIR = "${{ runner.workspace }}\PySoPlex\soplex\build\install"
-          python -m pip install .
+          /c/hostedtoolcache/windows/Python/3.10.11/x64/python -m pip install .
 
       - name: Run pysoplex tests
         shell: powershell
