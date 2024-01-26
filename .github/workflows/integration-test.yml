@@ -36,7 +36,7 @@ jobs:
 #        run: |
 #          sudo apt-get update
 #          sudo apt-get install git cmake gcc g++
-#          git clone -b fix-285-strncpy-issue https://github.com/scipopt/soplex.git
+#          git clone -b bugfix-70 https://github.com/scipopt/soplex.git
 #          cd soplex
 #          mkdir build
 #          cd build
@@ -75,7 +75,7 @@ jobs:
       - name: Install dependencies (soplex)
         shell: powershell
         run: |
-          git clone -b fix-285-strncpy-issue https://github.com/scipopt/soplex.git
+          git clone -b bugfix-70 https://github.com/scipopt/soplex.git
           cd soplex
           mkdir build
           cd build
@@ -97,6 +97,7 @@ jobs:
       - name: Install PySoPlex
         shell: powershell
         run: |
+          $Env:PATH = "${{ runner.workspace }}\PySoPlex\soplex\build\install\bin;%PATH%"
           $Env:SOPLEX_DIR = "${{ runner.workspace }}\PySoPlex\soplex\build\install"
           python -m pip install .
 
