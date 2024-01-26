@@ -139,7 +139,7 @@ jobs:
           cd soplex
           mkdir build
           cd build
-          cmake ../ -DCMAKE_INSTALL_PREFIX=./install
+          cmake ../ -DMPFR=Off -DBOOST=Off -DCMAKE_INSTALL_PREFIX=./install
           make -j
           make install
 
