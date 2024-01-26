@@ -116,11 +116,11 @@ jobs:
 #          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
 #          py.test
 
-  windows-test:
+  windows-test-boost-off:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v3
 
@@ -158,7 +158,6 @@ jobs:
         shell: powershell
         run: |
           $Env:PATH += ";$Env:SOPLEX_DIR/bin"
-          #          $Env:PATH = "${{ runner.workspace }}\PySoPlex\soplex\build\install\bin;%PATH%"
           py.test
 
 #  mac-test-boost-off:
