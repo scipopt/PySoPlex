@@ -215,176 +215,176 @@ jobs:
 #          $Env:PATH += ";$Env:SOPLEX_DIR/bin"
 #          py.test
 
-#  mac-test-boost-off:
-#    runs-on: macos-latest
-#    strategy:
-#      matrix:
-#        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Cache dependencies (soplex)
-#        id: cache-soplex
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ${{ runner.workspace }}/PySoPlex
-#            ~/Library/Caches/Homebrew/git--*
-#              /usr/local/opt/git*
-#            ~/Library/Caches/Homebrew/downloads/*--git-*
-#            ~/Library/Caches/Homebrew/cmake--*
-#              /usr/local/opt/cmake*
-#            ~/Library/Caches/Homebrew/downloads/*--cmake-*
-#          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
-#          restore-keys: |
-#            ${{ runner.os }}-soplex-${{ env.version }}-
-#
-#      - name: Install dependencies (soplex)
-#        if: steps.cache-soplex.outputs.cache-hit != 'true'
-#        run: |
-#          brew install git cmake
-#          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
-#          cd soplex
-#          mkdir build
-#          cd build
-#          cmake ../ -DMPFR=Off -DBOOST=Off -DCMAKE_INSTALL_PREFIX=./install
-#          make -j
-#          make install
-#
-#      - name: Setup python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#
-#      - name: Prepare python environment
-#        run: |
-#          python -m pip install --upgrade pip
-#          python -m pip install cython wheel pytest
-#
-#      - name: Install PySoPlex
-#        run: |
-#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-#          python -m pip install .
-#
-#      - name: Run pysoplex tests
-#        run: |
-#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-#          export DYLD_LIBRARY_PATH=${{ runner.workspace }}/PySoPlex/soplex/build/install/lib:${DYLD_LIBRARY_PATH}
-#          py.test
-#
-#  mac-test-boost-on:
-#    runs-on: macos-latest
-#    strategy:
-#      matrix:
-#        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Cache dependencies (soplex)
-#        id: cache-soplex
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ${{ runner.workspace }}/PySoPlex
-#            ~/Library/Caches/Homebrew/git--*
-#              /usr/local/opt/git*
-#            ~/Library/Caches/Homebrew/downloads/*--git-*
-#            ~/Library/Caches/Homebrew/cmake--*
-#              /usr/local/opt/cmake*
-#            ~/Library/Caches/Homebrew/downloads/*--cmake-*
-#          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
-#          restore-keys: |
-#            ${{ runner.os }}-soplex-${{ env.version }}-
-#
-#      - name: Install dependencies (soplex)
-#        if: steps.cache-soplex.outputs.cache-hit != 'true'
-#        run: |
-#          brew install git cmake boost
-#          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
-#          cd soplex
-#          mkdir build
-#          cd build
-#          cmake ../ -DMPFR=On -DBOOST=On -DCMAKE_INSTALL_PREFIX=./install
-#          make -j
-#          make install
-#
-#      - name: Setup python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#
-#      - name: Prepare python environment
-#        run: |
-#          python -m pip install --upgrade pip
-#          python -m pip install cython wheel pytest
-#
-#      - name: Install PySoPlex
-#        run: |
-#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-#          python -m pip install .
-#
-#      - name: Run pysoplex tests
-#        run: |
-#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-#          export DYLD_LIBRARY_PATH=${{ runner.workspace }}/PySoPlex/soplex/build/install/lib:${DYLD_LIBRARY_PATH}
-#          py.test
-#
-#  mac-test-boost-auto:
-#    runs-on: macos-latest
-#    strategy:
-#      matrix:
-#        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Cache dependencies (soplex)
-#        id: cache-soplex
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ${{ runner.workspace }}/PySoPlex
-#            ~/Library/Caches/Homebrew/git--*
-#              /usr/local/opt/git*
-#            ~/Library/Caches/Homebrew/downloads/*--git-*
-#            ~/Library/Caches/Homebrew/cmake--*
-#              /usr/local/opt/cmake*
-#            ~/Library/Caches/Homebrew/downloads/*--cmake-*
-#          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
-#          restore-keys: |
-#            ${{ runner.os }}-soplex-${{ env.version }}-
-#
-#      - name: Install dependencies (soplex)
-#        if: steps.cache-soplex.outputs.cache-hit != 'true'
-#        run: |
-#          brew install git cmake
-#          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
-#          cd soplex
-#          mkdir build
-#          cd build
-#          cmake ../ -DCMAKE_INSTALL_PREFIX=./install
-#          make -j
-#          make install
-#
-#      - name: Setup python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#
-#      - name: Prepare python environment
-#        run: |
-#          python -m pip install --upgrade pip
-#          python -m pip install cython wheel pytest
-#
-#      - name: Install PySoPlex
-#        run: |
-#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-#          python -m pip install .
-#
-#      - name: Run pysoplex tests
-#        run: |
-#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-#          export DYLD_LIBRARY_PATH=${{ runner.workspace }}/PySoPlex/soplex/build/install/lib:${DYLD_LIBRARY_PATH}
-#          py.test
+  mac-test-boost-off:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache dependencies (soplex)
+        id: cache-soplex
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ runner.workspace }}/PySoPlex
+            ~/Library/Caches/Homebrew/git--*
+              /usr/local/opt/git*
+            ~/Library/Caches/Homebrew/downloads/*--git-*
+            ~/Library/Caches/Homebrew/cmake--*
+              /usr/local/opt/cmake*
+            ~/Library/Caches/Homebrew/downloads/*--cmake-*
+          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
+          restore-keys: |
+            ${{ runner.os }}-soplex-${{ env.version }}-
+
+      - name: Install dependencies (soplex)
+        if: steps.cache-soplex.outputs.cache-hit != 'true'
+        run: |
+          brew install git cmake
+          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
+          cd soplex
+          mkdir build
+          cd build
+          cmake ../ -DMPFR=Off -DBOOST=Off -DCMAKE_INSTALL_PREFIX=./install
+          make -j
+          make install
+
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Prepare python environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install cython wheel pytest
+
+      - name: Install PySoPlex
+        run: |
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          python -m pip install .
+
+      - name: Run pysoplex tests
+        run: |
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          export DYLD_LIBRARY_PATH=${{ runner.workspace }}/PySoPlex/soplex/build/install/lib:${DYLD_LIBRARY_PATH}
+          py.test
+
+  mac-test-boost-on:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache dependencies (soplex)
+        id: cache-soplex
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ runner.workspace }}/PySoPlex
+            ~/Library/Caches/Homebrew/git--*
+              /usr/local/opt/git*
+            ~/Library/Caches/Homebrew/downloads/*--git-*
+            ~/Library/Caches/Homebrew/cmake--*
+              /usr/local/opt/cmake*
+            ~/Library/Caches/Homebrew/downloads/*--cmake-*
+          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
+          restore-keys: |
+            ${{ runner.os }}-soplex-${{ env.version }}-
+
+      - name: Install dependencies (soplex)
+        if: steps.cache-soplex.outputs.cache-hit != 'true'
+        run: |
+          brew install git cmake boost
+          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
+          cd soplex
+          mkdir build
+          cd build
+          cmake ../ -DMPFR=On -DBOOST=On -DCMAKE_INSTALL_PREFIX=./install
+          make -j
+          make install
+
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Prepare python environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install cython wheel pytest
+
+      - name: Install PySoPlex
+        run: |
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          python -m pip install .
+
+      - name: Run pysoplex tests
+        run: |
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          export DYLD_LIBRARY_PATH=${{ runner.workspace }}/PySoPlex/soplex/build/install/lib:${DYLD_LIBRARY_PATH}
+          py.test
+
+  mac-test-boost-auto:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache dependencies (soplex)
+        id: cache-soplex
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ runner.workspace }}/PySoPlex
+            ~/Library/Caches/Homebrew/git--*
+              /usr/local/opt/git*
+            ~/Library/Caches/Homebrew/downloads/*--git-*
+            ~/Library/Caches/Homebrew/cmake--*
+              /usr/local/opt/cmake*
+            ~/Library/Caches/Homebrew/downloads/*--cmake-*
+          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
+          restore-keys: |
+            ${{ runner.os }}-soplex-${{ env.version }}-
+
+      - name: Install dependencies (soplex)
+        if: steps.cache-soplex.outputs.cache-hit != 'true'
+        run: |
+          brew install git cmake
+          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
+          cd soplex
+          mkdir build
+          cd build
+          cmake ../ -DCMAKE_INSTALL_PREFIX=./install
+          make -j
+          make install
+
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Prepare python environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install cython wheel pytest
+
+      - name: Install PySoPlex
+        run: |
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          python -m pip install .
+
+      - name: Run pysoplex tests
+        run: |
+          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+          export DYLD_LIBRARY_PATH=${{ runner.workspace }}/PySoPlex/soplex/build/install/lib:${DYLD_LIBRARY_PATH}
+          py.test
 
 #  ### if you need valgrind on mac, you can install it via
 #  # brew tap LouisBrunner/valgrind
