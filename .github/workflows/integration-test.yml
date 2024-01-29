@@ -7,7 +7,7 @@ env:
 on:
   push:
     branches:
-      - 'master'
+      - '**'
   pull_request:
       - 'master'
 
@@ -93,7 +93,7 @@ jobs:
           cd soplex
           mkdir build
           cd build
-          cmake ../ -DCMAKE_INSTALL_PREFIX=./install
+          cmake ../ -DMPFR=On -DBOOST=On -DCMAKE_INSTALL_PREFIX=./install
           make -j
           make install
 
