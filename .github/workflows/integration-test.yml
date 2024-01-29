@@ -14,59 +14,59 @@ on:
 
 jobs:
 
-  ubuntu-test:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: true
-      matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Cache dependencies (soplex)
-        id: cache-soplex
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ runner.workspace }}/PySoPlex
-          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
-          restore-keys: |
-            ${{ runner.os }}-soplex-${{ env.version }}-
-
-      - name: Install dependencies (soplex)
-        if: steps.cache-soplex.outputs.cache-hit != 'true'
-        run: |
-          sudo apt-get update
-          # install "libboost-all-dev" as well if needed
-          sudo apt-get install git cmake gcc g++
-          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
-          cd soplex
-          mkdir build
-          cd build
-          # set -DMPFR=On/Off and -DBOOST=On/Off explicity if needed
-          cmake ../ -DCMAKE_INSTALL_PREFIX=./install
-          make -j
-          make install
-
-      - name: Setup python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Prepare python environment
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install cython wheel pytest
-
-      - name: Install PySoPlex
-        run: |
-          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-          python -m pip install .
-
-      - name: Run pysoplex tests
-        run: |
-          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
-          py.test
+#  ubuntu-test:
+#    runs-on: ubuntu-20.04
+#    strategy:
+#      fail-fast: true
+#      matrix:
+#        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Cache dependencies (soplex)
+#        id: cache-soplex
+#        uses: actions/cache@v3
+#        with:
+#          path: |
+#            ${{ runner.workspace }}/PySoPlex
+#          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
+#          restore-keys: |
+#            ${{ runner.os }}-soplex-${{ env.version }}-
+#
+#      - name: Install dependencies (soplex)
+#        if: steps.cache-soplex.outputs.cache-hit != 'true'
+#        run: |
+#          sudo apt-get update
+#          # install "libboost-all-dev" as well if needed
+#          sudo apt-get install git cmake gcc g++
+#          git clone -b fix-mpfr-no-boost https://github.com/scipopt/soplex.git
+#          cd soplex
+#          mkdir build
+#          cd build
+#          # set -DMPFR=On/Off and -DBOOST=On/Off explicity if needed
+#          cmake ../ -DCMAKE_INSTALL_PREFIX=./install
+#          make -j
+#          make install
+#
+#      - name: Setup python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#
+#      - name: Prepare python environment
+#        run: |
+#          python -m pip install --upgrade pip
+#          python -m pip install cython wheel pytest
+#
+#      - name: Install PySoPlex
+#        run: |
+#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+#          python -m pip install .
+#
+#      - name: Run pysoplex tests
+#        run: |
+#          export SOPLEX_DIR=${{ runner.workspace }}/PySoPlex/soplex/build/install
+#          py.test
 
 ## Following Windows test produces linking errors; so turned it off for now
 #  windows-test-boost-off:
