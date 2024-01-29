@@ -121,22 +121,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache dependencies (soplex)
-        id: cache-soplex
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ runner.workspace }}/PySoPlex
-            ~/Library/Caches/Homebrew/git--*
-              /usr/local/opt/git*
-            ~/Library/Caches/Homebrew/downloads/*--git-*
-            ~/Library/Caches/Homebrew/cmake--*
-              /usr/local/opt/cmake*
-            ~/Library/Caches/Homebrew/downloads/*--cmake-*
-          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
-          restore-keys: |
-            ${{ runner.os }}-soplex-${{ env.version }}-
-
       - name: Install dependencies (soplex)
         if: steps.cache-soplex.outputs.cache-hit != 'true'
         run: |
