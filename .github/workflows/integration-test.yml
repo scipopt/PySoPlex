@@ -121,6 +121,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Cache dependencies (soplex)
+        id: cache-soplex
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ runner.workspace }}/PySoPlex
+          key: ${{ runner.os }}-soplex-${{ env.version }}-${{ hashFiles('**/lockfiles') }}
+          restore-keys: |
+            ${{ runner.os }}-soplex-${{ env.version }}-
+
       - name: Install dependencies (soplex)
         if: steps.cache-soplex.outputs.cache-hit != 'true'
         run: |
